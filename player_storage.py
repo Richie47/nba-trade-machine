@@ -1,11 +1,13 @@
-from decimal import Decimal
-from re import sub
-
+'''
+NOTE: This class does not seem useful at the moment due to the the webscraper being able to send data straight to 
+the SQL server, but I will keep the file here for now.
+'''
 #Consider this my 'Node' class, in the future we'll have to deal with having many many attributes..
 class Player:
-    def __init__(self, name, salary):
+    def __init__(self, name, salary, age):
         self._name = name
         self._salary = salary
+        self._age = age
         self._next = None
 
     #Used the property decorator instead of traditional getters and setters! Hear it's more 'pythonic'
@@ -26,10 +28,12 @@ class Playerbase:
     def __init__(self):
         self.head = None
 
-    def insert(self, name, salary):
-        new_player = Player(name, salary)
+    def insert(self, name, salary, age):
+    
+        new_player = Player(name, salary, age)
         new_player.next_node = self.head
         self.head = new_player 
+        
 
     #TODO: figure out more about these __method__ things, don't really understand them.
     def __len__(self):
@@ -46,5 +50,5 @@ class Playerbase:
         current = self.head
 
         while current is not None:
-            print(f'Name: {current._name}   Salary: {current._salary}  Team:') 
+            print(f'Name: {current._name}   Salary: {current._salary}  Age: {current._age}') 
             current = current.next_node
