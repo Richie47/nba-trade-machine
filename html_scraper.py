@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from string import ascii_lowercase
 import requests
 import pypyodbc
 import re
@@ -9,12 +10,38 @@ For now I will try to separate the scraping of the data and how I insert the dat
 '''
 class Scraper:
     def __init__():
+        index = ascii_lowercase  #from string module get a str of 'a-z'
+
+        for i in range(len(index)):
         #Use beautifulsoup to parse and webscrape 
-        page = requests.get('https://www.basketball-reference.com/contracts/PHO.html').content
-        page1 = requests.get('https://www.basketball-reference.com/players/a').content
-        bs = BeautifulSoup(page, 'html5lib')
-        bs1 = BeautifulSoup(page1, 'html5lib')
-        index = 
+            page_index = requests.get(f'https://www.basketball-reference.com/players/{index[i]}')content
+            bs = BeautifulSoup(page, 'html5lib')
+            scrape_player(bs)
+    
+    '''
+    Called by _init_() of class Scraper
+
+    @param BeautifulSoup object that contains a page index ranging from 'a-z'
+
+    @method scrape and separate active players,
+    then scrape attributes of every individual active player,
+    then send the player information to class Export_MSSQL
+
+    @return TODO:
+    '''
+    def scrape_player(bs):
+        player_directory = bs.select('strong a')
+        active_players = [] #creates a list of active players, also clears the list for every new index
+        
+        for player in player_directory:
+            active_players.append(player['href'])
+
+        for i in range(len(active_players)):
+            '''
+            Create a new request and BeautifulSoup object, request every player\]]
+            '''
+
+
 
     '''Maybe put the scraper here?
     I need to be able to say I want you to start at a, go for the length of filtered <strong> tags, we send that page
@@ -22,7 +49,7 @@ class Scraper:
     TODO: Do I want to send that players info right away to sql, or do i want to gather by every letter, then send
     or do i want to send after getting a massive amount of information?
     '''
-    def scrape(bs):
+    
 
 test_box = bs1.find_all('strong', href = re.compile("players"))
 test_box = bs1.find_all('strong')
