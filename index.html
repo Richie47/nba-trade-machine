@@ -1,29 +1,45 @@
 <html>
 
 <head>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
-
-  <script>
-    $.getJSON('results.json', function(data) {
-      $.each(data, function(i, f) {
-        var tr = "<tr>" + "<td style = text-align:center>" + f.Name + "</td>" +
-          "<td style = text-align:center>" + f.Age + "</td>" + "<td  style = text-align:center>" + f.Salary + "</td>" + "</tr>"
-        $(tr).appendTo("#players tbody");
-      })
-    })
-  </script>
+  <link rel="stylesheet" href="index.css" />
+  </script src="index.js">
 </head>
 
-<body>
-  <table id="players" style="width:100%">
-    <thead>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Salary</th>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+<body style="background-color:#c9082a">
+  <div class="nav" style="width:100%">
+    <a class="nav">Home</a>
+
+  </div>
+  <div>
+    <h1 style="text-align:left" id="header">NBA Trade Machine</h1>
+    <div class="team-holder">
+      <div class="team1 team">
+        <select  id="t1" class="team1">
+          <option value="Team 1">Team 1</option>
+        </select>
+        <ul class="team1">
+
+          <ul>
+      </div>
+      <div class="team2 team">
+        <select class="team2">
+        <option value="Team 2">Team 2</option>
+
+        </select>
+        <ul class="team2">
+
+          <ul>
+      </div>
+      <div class="team3 team">
+        <select class="team3">
+          <option value="Team 3">Team 3</option>
+        </select>
+        <ul class="team3">
+
+          <ul>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

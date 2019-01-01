@@ -1,0 +1,19 @@
+#header {
+  font-family:"Segoe UI Light", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.team{
+  float:left;
+  margin-left:20%;
+}
+
+
+
+.nav {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
