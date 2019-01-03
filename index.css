@@ -2,13 +2,16 @@
   font-family:"Segoe UI Light", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-.team{
-  float:left;
-  margin-left:20%;
+
+
+li{
+  font-size: 24px;
 }
+.team-holder{
 
-
-
+left:30%;
+  position: absolute;
+}
 .nav {
   float: left;
   display: block;
@@ -16,4 +19,21 @@
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+}
+.row{
+
+  text-align: center;
+  display: table-row;
+
+}
+div.element{
+
+  display: table-cell;
+  border-style:solid;
+  padding-left: 15px;
+}
+.team-holder:after{
+  content: " ";
+  display:block;
+  clear:both;
 }
