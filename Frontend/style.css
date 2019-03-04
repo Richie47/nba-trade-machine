@@ -11,6 +11,20 @@ h1{
   text-align:center;
 }
 
+button{
+  background-color:#fff;
+  border:none;
+  font-family: "Segoe UI Light", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji", sans-serif; 
+  font-size: 100%;
+  text-align:left;
+  display: inline-block;     
+  position: relative;    
+  z-index: 1;     
+  padding: 0.2em;
+  margin: 0em;
+  flex-grow: 1; /*allows button to be size of the division box*/
+}
 /* use flex-wrap to make the size of each division box*/
 .conference {
   display: flex;
@@ -38,9 +52,10 @@ h1{
 .team {
   display: flex;
   align-items: center;
-  padding: 3px 0;
+  padding: 0.5px 0;
 }
 /*pad some room after the logo*/
 .team__logo {
-  margin-right: 20px;
+  
+  margin-right: 10px;
 }
