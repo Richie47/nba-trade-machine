@@ -12,7 +12,7 @@ window.onload = function () {
                 selectedTeams.push(this.innerText)
 
                 this.className += ' selected'
-            }K
+            }
             console.log(selectedTeams)
         }
     }
