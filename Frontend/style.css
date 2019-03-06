@@ -11,7 +11,17 @@ h1{
   text-align:center;
 }
 
-button{
+.trade-button{
+  display:none;
+  text-align:center;
+  background-color: #9ccbeb;
+  border:none;
+  height: 50px;
+  width: 30%;
+
+}
+
+.button{
   background-color:#fff;
   border:none;
   font-family: "Segoe UI Light", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -56,6 +66,11 @@ button{
 }
 /*pad some room after the logo*/
 .team__logo {
+  z-index: -1;
   
   margin-right: 10px;
+}
+
+.selected{
+ /*someday may want to change select color*/  
 }
