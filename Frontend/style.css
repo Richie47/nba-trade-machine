@@ -59,3 +59,8 @@ button{
   
   margin-right: 10px;
 }
+
+.selected
+{
+  background-color: #008CBA;
+}
