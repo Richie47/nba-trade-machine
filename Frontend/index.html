@@ -1,98 +1,135 @@
-<!DOCTYPE html> <!-- declare html version-->
+<!DOCTYPE html>
+<!-- declare html version-->
 <html>
-<!--head refers to the css file as well as our future javascript-->
+<!--head refers to the css file-->
+
 <head>
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <h1>NBA TRADE MACHINE</h1>
-  <div><button class="trade-button">TRADE</button></div>
-  <h2 class="header--east" id="header">EAST TEAMS</h2>
-  <!--Structure goes as so: There are two conferences, within each conference there are three divisions,
+    <script src="script.js"></script> <!-- CHANGE THIS BACK I SWITCHED THE SCRIPT-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <h1>NBA TRADE MACHINE</h1>
+    <div><button class="trade-button">TRADE</button><span id="team-trades" style='float:right;'> &nbsp;</span></div>
+    <div style="clear:both">
+        <h2 class="header--east" id="header">EAST TEAMS</h2>
+        <!--Structure goes as so: There are two conferences, within each conference there are three divisions,
   within each division there are four teams. Each team contains the logo and their name
   TODO: Change the listed team's into buttons and figure out how to maintain the same UI look the list version has.
   -->
-  <div class="conference">
-    <div class="division">
-      <h3 class="division-title">
-        Atlantic
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/227/full/4578_toronto_raptors-primary-2016.png" width="30" height="30">Toronto Raptors</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/phi.png" width="30" height="30">Philadelphia 76ers</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/213/full/slhg02hbef3j1ov4lsnwyol5o.png" width="30" height="30">Boston Celtics</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/3786/full/930_brooklyn-nets-partial-2013.png" width="30" height="30">Brookyln Nets</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/216/full/5cewvhuzbe6t8rqc1q3dmevoh.gif" width="30" height="27.5">New York Knicks</button></li>
-      </ul>
-    </div>
-    <div class="division">
-      <h3 class="division-title">
-        Central
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/225/full/3864_milwaukee_bucks-alternate-2016.png" width="30" height="30">Milwaukee Bucks</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/224/full/gdm7egmgv3tsspc6f1gym7cwz.gif" width="30" height="30">Indiana Pacers</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/223/full/3080.gif" width="30" height="30">Detroit Pistons</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/221/full/zdrycpc7mh5teihl10gko8sgf.png" width="30" height="30">Chicago Bulls</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://www.nba.com/.element/media/2.0/teamsites/cavaliers/images/170531-partial-logo.png" width="30" height="30">Cleveland Cavaliers</button></li>
-      </ul>
-    </div>
-    <div class="division">
-      <h3 class="division-title">
-        Southeast
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/orl.png" width="30" height="30">Orlando Magic</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/cha.png" width="30" height="30">Charlotte Hornets</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/mia.png" width="30" height="30">Miami Heat</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/wsh.png" width="30" height="30">Washington Wizards</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/220/full/8452_atlanta_hawks-alternate-2016.png" width="30" height="30"> Atlanta Hawks</button></li>
-      </ul>
-    </div>
-  </div>
+        <div class="conference">
+            <div class="division">
+                <h3 class="division-title">
+                    Atlantic
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/227/full/4578_toronto_raptors-primary-2016.png"
+                                width="30" height="30">Toronto Raptors</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/phi.png"
+                                width="30" height="30">Philadelphia 76ers</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/213/full/slhg02hbef3j1ov4lsnwyol5o.png"
+                                width="30" height="30">Boston Celtics</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/3786/full/930_brooklyn-nets-partial-2013.png"
+                                width="30" height="30">Brookyln Nets</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/216/full/5cewvhuzbe6t8rqc1q3dmevoh.gif"
+                                width="30" height="27.5">New York Knicks</button></li>
+                </ul>
+            </div>
+            <div class="division">
+                <h3 class="division-title">
+                    Central
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/225/full/3864_milwaukee_bucks-alternate-2016.png"
+                                width="30" height="30">Milwaukee Bucks</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/224/full/gdm7egmgv3tsspc6f1gym7cwz.gif"
+                                width="30" height="30">Indiana Pacers</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/223/full/3080.gif"
+                                width="30" height="30">Detroit Pistons</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/221/full/zdrycpc7mh5teihl10gko8sgf.png"
+                                width="30" height="30">Chicago Bulls</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://www.nba.com/.element/media/2.0/teamsites/cavaliers/images/170531-partial-logo.png"
+                                width="30" height="30">Cleveland Cavaliers</button></li>
+                </ul>
+            </div>
+            <div class="division">
+                <h3 class="division-title">
+                    Southeast
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/orl.png"
+                                width="30" height="30">Orlando Magic</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/cha.png"
+                                width="30" height="30">Charlotte Hornets</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/mia.png"
+                                width="30" height="30">Miami Heat</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/wsh.png"
+                                width="30" height="30">Washington Wizards</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/220/full/8452_atlanta_hawks-alternate-2016.png"
+                                width="30" height="30"> Atlanta Hawks</button></li>
+                </ul>
+            </div>
+        </div>
 
-    <h2 class="header--west" id="header">WEST TEAMS</h2>
+        <h2 class="header--west" id="header">WEST TEAMS</h2>
 
-  <div class="conference">
-    <div class="division">
-      <h3 class="division-title">
-      Northwest 
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/229/full/8926_denver_nuggets-primary-2019.png" width="30" height="30">Denver Nuggets</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/2687/full/khmovcnezy06c3nm05ccn0oj2.png" width="30" height="30">Oklahoma City Thunder</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/por.png" width="30" height="30">Portland Trailblazers</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/234/thumbs/23431712017.gif" width="30" height="30">Utah Jazz</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/232/full/3828_minnesota_timberwolves-alternate-2018.png" width="30" height="27.5">Minnesota Timberwolves</button></li>
-      </ul>
+        <div class="conference">
+            <div class="division">
+                <h3 class="division-title">
+                    Northwest
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/229/full/8926_denver_nuggets-primary-2019.png"
+                                width="30" height="30">Denver Nuggets</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/2687/full/khmovcnezy06c3nm05ccn0oj2.png"
+                                width="30" height="30">Oklahoma City Thunder</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/por.png"
+                                width="30" height="30">Portland Trailblazers</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/234/thumbs/23431712017.gif"
+                                width="30" height="30">Utah Jazz</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/232/full/3828_minnesota_timberwolves-alternate-2018.png"
+                                width="30" height="27.5">Minnesota Timberwolves</button></li>
+                </ul>
+            </div>
+            <div class="division">
+                <h3 class="division-title">
+                    Pacific
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/235/full/5gzur7f6x09cv61jt16smhopl.gif"
+                                width="30" height="30">Golden State Warriors</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/236/full/1038_los_angeles_clippers-secondary-2016.png"
+                                width="30" height="30">LA Clippers</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://images.homedepot-static.com/productImages/ce8be48f-a86e-4b96-a365-d97d33cc02e3/svn/purple-applied-icon-wall-decals-nbop1401-64_1000.jpg"
+                                width="30" height="30">Los Angeles Lakers</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/240/full/2738_sacramento_kings-alternate-2017.png"
+                                width="30" height="30">Sacramento Kings</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/238/full/3834_phoenix_suns-partial-2014.png"
+                                width="30" height="30">Phoenix Suns</button></li>
+                </ul>
+            </div>
+            <div class="division">
+                <h3 class="division-title">
+                    Southwest
+                </h3>
+                <ul class="teams">
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/230/full/etpzlhc48xgh58agjuln2khsl.gif"
+                                width="30" height="30">Houston Rockets</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/sa.png"
+                                width="30" height="30">San Antonio Spurs</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/231/full/7277_memphis_grizzlies-alternate-2019.png"
+                                width="30" height="30">Memphis Grizzlies</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/228/full/5118_dallas_mavericks-alternate-2018.png"
+                                width="30" height="30">Dallas Mavericks</button></li>
+                    <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/4962/full/2227_new_orleans_pelicans-alternate-2014.png"
+                                width="30" height="30">New Orleans Pelicans</button></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="division">
-      <h3 class="division-title">
-        Pacific
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/235/full/5gzur7f6x09cv61jt16smhopl.gif" width="30" height="30">Golden State Warriors</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/236/full/1038_los_angeles_clippers-secondary-2016.png" width="30" height="30">LA Clippers</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://images.homedepot-static.com/productImages/ce8be48f-a86e-4b96-a365-d97d33cc02e3/svn/purple-applied-icon-wall-decals-nbop1401-64_1000.jpg" width="30" height="30">Los Angeles Lakers</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/240/full/2738_sacramento_kings-alternate-2017.png" width="30" height="30">Sacramento Kings</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/238/full/3834_phoenix_suns-partial-2014.png" width="30" height="30">Phoenix Suns</button></li>
-      </ul>
+    <h4 id="error-message"></h4>
     </div>
-    <div class="division">
-      <h3 class="division-title">
-      Southwest
-      </h3>
-      <ul class="teams">
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/230/full/etpzlhc48xgh58agjuln2khsl.gif" width="30" height="30">Houston Rockets</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="https://a.espncdn.com/i/teamlogos/nba/500/sa.png" width="30" height="30">San Antonio Spurs</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/231/full/7277_memphis_grizzlies-alternate-2019.png" width="30" height="30">Memphis Grizzlies</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/228/full/5118_dallas_mavericks-alternate-2018.png" width="30" height="30">Dallas Mavericks</button></li>
-        <li class="team"><button class="button"><img class="team__logo" src="http://content.sportslogos.net/logos/6/4962/full/2227_new_orleans_pelicans-alternate-2014.png" width="30" height="30">New Orleans Pelicans</button></li>
-      </ul>
-    </div>
-  </div>
-  </div>
-  <h4 id= "error-message"></h4>
 </body>
+
 </html>
