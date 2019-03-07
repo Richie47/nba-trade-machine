@@ -12,13 +12,14 @@ h1{
 }
 
 .trade-button{
-  display:none;
+  display:inline;
+  position: relative;
+  float: right;
   text-align:center;
   background-color: #9ccbeb;
   border:none;
   height: 50px;
   width: 30%;
-
 }
 
 .button{
