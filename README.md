@@ -17,7 +17,7 @@ Sync updating scraper to database
 
 Frontend goals:
 
-Create a functioning home page for the user to select teams for trades [WIP]
+Create a functioning home page for the user to select teams for trades [DONE]
 
 Create a working server to connect multiple pages together [WIP]
 
