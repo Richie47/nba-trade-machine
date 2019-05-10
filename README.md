@@ -19,9 +19,9 @@ Frontend goals:
 
 Create a functioning home page for the user to select teams for trades [DONE]
 
-Create a working server to connect multiple pages together [WIP]
+Create a working server to connect multiple pages together [DONE]
 
-A generic algorithm that be able to parse through the SQL database or a .json file and create a team roster automatically
+A generic algorithm that be able to parse through the SQL database or a .json file and create a team roster automatically [WIP]
 
 Implement trade logic
 
