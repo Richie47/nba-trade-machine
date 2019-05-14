@@ -36,6 +36,9 @@ for i in range(len(teams)):
     #prettify the scraped data so it fits cleanly into the sql table
     for i in range(len(name_box)):
         name_box[i] = name_box[i].text.strip()
+        #Use regex to remove all unwanted characters to create our primary key
+        primary_key = name_box[i].lower()
+        primary_key = re.sub("[.,\'-]", '', primary_key.split()[1]) +  re.sub("[.,\'-]", '', primary_key.split()[0])
         sal_box[i] = sal_box[i].text.strip()[1:]
         age_box[i] = age_box[i].text.strip()
         sal_box[i] = sal_box[i].replace(',', '')  #remove commas as SQL will only accept straight numbers for an INT

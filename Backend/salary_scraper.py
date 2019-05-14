@@ -5,10 +5,9 @@ import re #used for regex
 from re import sub #used for regex
 
 '''NOTE: THIS IS ONLY VIABLE FOR HOOPSHYPE AS OF 5/11/19 , AND KENNETH FARIED DOESN'T WORK FOR SOME REASON
-AS WELL AS LUC MBAH A MOUTE'''
+AS WELL AS LUC MBAH A MOUTE, JOSE CALDERON EDMON SUMNER WALTER LEMON JR, MITCHELL CREEK, EMMANUEL TERRY, AND TARIK PHILLIP''' 
 
-'''
-2ai) we modify the name so that we can get it to be the link we want, then request that url
+'''2ai) we modify the name so that we can get it to be the link we want, then request that url
 2aii) Once there we implement the logic we tested earlier, achieving the salary, years, and position.
 2aiii) come back to the method that called us above
 '''

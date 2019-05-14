@@ -5,7 +5,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 import pypyodbc
 import re
-import time
+
 
 '''
 TODO: Better organize how I am scraping this data. 
@@ -21,6 +21,8 @@ class Scraper:
         for i in range(len(index)):
         #Use beautifulsoup to parse and webscrape 
             page_index = requests.get(f'http://www.basketball-reference.com/players/{index[i]}').content
+       
+
             self.scrape_player(page_index)
             
 
@@ -52,6 +54,10 @@ class Scraper:
             '''
             player_index = requests.get(f'http://www.basketball-reference.com{active_players[i]}').content
             bs2 = BeautifulSoup(player_index, 'html5lib')
+
+                 #horrible hardcode catch because apparently there are two Tony Mitchell's ugh
+            if active_players[i] == "/players/m/mitchto02.html":
+                continue
         
 
             
@@ -104,7 +110,13 @@ class Export_MSSQL:
         SQLCMD = ("INSERT INTO NBA_TEAM " "(ID, Team, Name, Picture, PPG, RPG, APG, PER)" "VALUES (?,?,?,?,?,?,?,?)")
 
         #TODO: FIX HOW I DO THIS, MAYBE USE CLASS ATTRIBUTES THIS WAY IS UNACCEPTABLE BUT I JUST WANT IT TO WORK NOW
-        id = [id]
+        
+        primary_key = name.lower()
+        if len(primary_key.split()) < 2:
+           primary_key = re.sub("[.,\' -]", '', primary_key) 
+        else:
+            primary_key = re.sub("[.,\'-]", '', primary_key.split()[1]) +  re.sub("[.,\'-]", '', primary_key.split()[0]) 
+        id = [primary_key]
         team = [team]
         name = [name]
         pic = [pic]
