@@ -14,7 +14,7 @@ h1{
 .trade-button{
   display:inline;
   position: relative;
-  float: right;
+  float:right;
   text-align:center;
   background-color: #9ccbeb;
   border:none;
