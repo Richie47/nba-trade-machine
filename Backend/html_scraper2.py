@@ -6,6 +6,10 @@ from requests.packages.urllib3.util.retry import Retry
 import pypyodbc
 import re
 
+from PIL import Image
+import urllib.request
+import os
+
 
 '''
 TODO: Better organize how I am scraping this data. 
@@ -73,6 +77,8 @@ class Scraper:
             apg = bs2.find('h4', string='AST').find_next_siblings('p') #[0]
             team = bs2.find_all(href=re.compile('team'))  #[1]
             per = bs2.find('h4', string='PER').find_next_siblings('p') #0
+
+
             Export_MSSQL.submit_to_sql( href_key, team[1].text.strip(), name.text.strip(),  pic['src'],  ppg[0].text.strip(), rpg[0].text.strip(), apg[0].text.strip(), per[0].text.strip() )
             #erase the storages after for the next player due to indexing issues.
             #TODO: Find a better way to clear the attributes or rework this whole scraping
@@ -107,8 +113,8 @@ class Export_MSSQL:
         SQL = 'SELECT * FROM NBA_TEAM'
         cur = connection.cursor()
         #Not all the values, I wasn't able to scrape Salary and Years Experience from this scrape method.
-        SQLCMD = ("INSERT INTO NBA_TEAM " "(ID, Team, Name, Picture, PPG, RPG, APG, PER)" "VALUES (?,?,?,?,?,?,?,?)")
-
+        #SQLCMD = ("INSERT INTO NBA_TEAM " "(ID, Team, Name, Picture, PPG, RPG, APG, PER)" "VALUES (?,?,?,?,?,?,?,?)")
+       
         #TODO: FIX HOW I DO THIS, MAYBE USE CLASS ATTRIBUTES THIS WAY IS UNACCEPTABLE BUT I JUST WANT IT TO WORK NOW
         
         primary_key = name.lower()
@@ -116,6 +122,15 @@ class Export_MSSQL:
            primary_key = re.sub("[.,\' -]", '', primary_key) 
         else:
             primary_key = re.sub("[.,\'-]", '', primary_key.split()[1]) +  re.sub("[.,\'-]", '', primary_key.split()[0]) 
+
+        #now make our new picture name and save it locally
+        urllib.request.urlretrieve(pic, f"./nba-trade-machine/Resources/Player_Pictures/{primary_key}.jpg")
+        #get the path of the new saved file, that's the local image that will be inserted into the database until i figure out cloud or some better solution
+        pic = os.path.abspath(f"{primary_key}.jpg")
+        SQLCMD = f"""UPDATE NBA_TEAM SET Picture='{pic}' WHERE ID='{primary_key}'"""
+        print(f"this is what went in {pic} for user {primary_key}")
+
+        """
         id = [primary_key]
         team = [team]
         name = [name]
@@ -125,13 +140,15 @@ class Export_MSSQL:
         apg = [apg]
         per = [per]
         values = [id,team,name,pic,ppg,rpg,apg,per]
+        """
+       
 
-        for values in zip(id,team,name,pic,ppg,rpg,apg,per):
-            cur.execute(SQLCMD, values)
+        #for values in zip(id,team,name,pic,ppg,rpg,apg,per):
+        #    cur.execute(SQLCMD, values)
+        cur.execute(SQLCMD)
 
-
-        connection.commit()
-        connection.close()
+        cur.commit()
+        cur.close()
 
 
 

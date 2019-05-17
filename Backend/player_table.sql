@@ -4,6 +4,7 @@ Uncomment the things below to create a new table
 
 -- Create a new table called 'NBA_TEAM' in schema 'dbo'
 -- Drop the table if it already exists
+
 /* uncomment multiline to create table
 IF OBJECT_ID('dbo.NBA_TEAM', 'U') IS NOT NULL
 DROP TABLE dbo.NBA_TEAM
