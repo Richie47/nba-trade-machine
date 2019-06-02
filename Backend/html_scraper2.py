@@ -80,14 +80,7 @@ class Scraper:
 
 
             Export_MSSQL.submit_to_sql( href_key, team[1].text.strip(), name.text.strip(),  pic['src'],  ppg[0].text.strip(), rpg[0].text.strip(), apg[0].text.strip(), per[0].text.strip() )
-            #erase the storages after for the next player due to indexing issues.
-            #TODO: Find a better way to clear the attributes or rework this whole scraping
-            name = []
-            pic = []
-            ppg = []
-            rpg = []
-            apg = []
-            team = []
+        
 
             print(f'Player {href_key} inserted!')
 
@@ -124,7 +117,7 @@ class Export_MSSQL:
             primary_key = re.sub("[.,\'-]", '', primary_key.split()[1]) +  re.sub("[.,\'-]", '', primary_key.split()[0]) 
 
         #now make our new picture name and save it locally
-        urllib.request.urlretrieve(pic, f"./nba-trade-machine/Resources/Player_Pictures/{primary_key}.jpg")
+        urllib.request.urlretrieve(pic, f".\\nba-trade-machine\\Frontend\\static\\images\\{primary_key}.jpg")
         #get the path of the new saved file, that's the local image that will be inserted into the database until i figure out cloud or some better solution
         pic = os.path.abspath(f"{primary_key}.jpg")
         SQLCMD = f"""UPDATE NBA_TEAM SET Picture='{pic}' WHERE ID='{primary_key}'"""

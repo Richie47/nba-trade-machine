@@ -3,7 +3,6 @@ var selectedTeams = [];
 const teamSelectLimit = 4;
 window.onload = function(){
 
-
  //code to either catch team selection logic issue or go to the next page
   $(document).ready(function(){
     $('.trade-button').click(function(e){

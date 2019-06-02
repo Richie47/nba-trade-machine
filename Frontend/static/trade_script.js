@@ -36,7 +36,7 @@
         var img = document.createElement('img');
         img.src = x[i].Picture;
         //now fill in the values given from the json
-        name.innerHTML =  "<img src ='" + x[i].Picture + "height=30 width=30 'alt='"+ x[i].Name + "'/> " + x[i].Name;
+        name.innerHTML = `<img src="">`;
         salary.innerHTML = formatter.format(x[i].Salary);
         per.innerHTML = x[i].PER
       }

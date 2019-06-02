@@ -27,7 +27,13 @@ CREATE TABLE dbo.NBA_TEAM
    PER [NVARCHAR](10),
    PRIMARY KEY (ID)
 );
-*/
---Just run the table 
-SELECT * FROM dbo.NBA_TEAM
+*/ --Just run the table 
+ALTER TABLE NBA_TEAM ALTER COLUMN Picture [NVARCHAR](200);
+UPDATE NBA_TEAM
+SET
+   Picture = REPLACE(Picture, 'C:\Users\Richie\Documents\VSC_Files\nba-trade-machine\Frontend\static\images\', 
+   'C:/Users/Richie/Documents/VSC_Files/nba-trade-machine/Frontend/static/images/');
+
+SELECT * FROM NBA_TEAM;
 GO
+
