@@ -35,8 +35,9 @@
         //need to separately obtain the picture of the player
         var img = document.createElement('img');
         img.src = x[i].Picture;
+        console.log(img.src)
         //now fill in the values given from the json
-        name.innerHTML = `<img src="">`;
+        name.innerHTML = `<img src= `+img.src +` height=40px width=35px>`;
         salary.innerHTML = formatter.format(x[i].Salary);
         per.innerHTML = x[i].PER
       }
