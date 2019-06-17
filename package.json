@@ -4,7 +4,8 @@
   "description": "A program that will allow users to conduct hypothetical trades between teams in the NBA.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "live": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
     "url": "https://github.com/Richie47/nba-trade-machine/issues"
   },
   "homepage": "https://github.com/Richie47/nba-trade-machine#readme",
-  "dependencies": {}
+  "dependencies": {
+    "express": "latest",
+    "reload": "^3.0.1"
+  }
 }

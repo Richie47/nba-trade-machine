@@ -14,10 +14,7 @@ window.onload = function(){
       else{
           window.localStorage.setItem("selectedTeams", JSON.stringify(selectedTeams));
           var href = 'trade.html';
-          alert(selectedTeams)
-          document.location.href = href; 
-          
-
+          document.location.href = href;
       }
          });
 });
