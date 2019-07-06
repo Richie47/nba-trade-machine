@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /*here create a general font for the page, and set the background*/
 body {
   font-family: "Segoe UI Light", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -12,13 +14,27 @@ h1{
 }
 
 /*selector for each trade row*/
-table#playerTable {
-  display: inline-flex;
-  padding: 30px;
+
+
+table{
+  border: 1px solid black;
+  display: inline-block;
+  vertical-align: top;
 }
-table#playerTable tr:hover{
+
+.tradeSelected{
+  background-color: rgba(180,195,217,0.49);
+}
+table tr:hover{
+  background-color: white;
+}
+.playerTable tr:hover{
   background-color: yellow;
 
+}
+
+.playerTable tbody.selected{
+  background-color: deepskyblue;
 }
 
 .trade-button{
@@ -88,5 +104,5 @@ table#playerTable tr:hover{
 }
 
 .selected{
- /*someday may want to change select color*/  
+ /*someday may want to change select color*/
 }
