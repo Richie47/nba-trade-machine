@@ -16,10 +16,35 @@ h1{
 /*selector for each trade row*/
 
 
-table{
+table. thead, tbody{
+    display:flex;
+  margin: 0 15px;
+}
+thead, tr, td{
   border: 1px solid black;
-  display: inline-block;
-  vertical-align: top;
+}
+
+.roster-container{
+   display: flex;
+   justify-content: flex-start;
+   flex-wrap: wrap;
+   flex-direction: row;
+   margin: 0 10px;
+}
+
+.top-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+}
+
+.hidden-divider{
+  margin: 0.1rem;
+}
+
+.trade-block-container{
+ display: flex;
 }
 
 .tradeSelected{

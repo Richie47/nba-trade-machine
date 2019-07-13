@@ -55,6 +55,17 @@ $(document).ready(function(){
     });
   });
 
+function generateRosterHeader(teamName){
+    const rosterHeader = document.querySelector(".trade-block-container");
+    console.log(teamName)
+     $.getJSON("./logos.json", function (teams) {
+         const teamRoster= teams.filter(team =>  team.Team.match(teamName));
+         rosterHeader.innerHTML += `
+          ${teamRoster[0].Team}            
+          <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px" alt="${teamRoster[0].Team}"/>
+    `
+    });
+}
       //gets the selected teams from the index.html page.
 const teamDatabase = JSON.parse(localStorage.getItem('selectedTeams'));
 const teamsToCreate = teamDatabase.length ; //account for 0 index
@@ -70,15 +81,18 @@ let teamTables = [firstTeam, secondTeam, thirdTeam, forthTeam];
 
 
 /**
- * ok. so i want to go through every iteration: 1) build the head which i think is fine. but to do this we first need to
- * build the table. we want to fill the table with the appropiate roster. what we have already might be good enough. and using the map
- * fucntion would be more fun then making a nested for loop. so i'll spend the next 20-60 mins trying to use the map. if that doesnt work we'll do the
- * hardcode way out.
  *
- * we should also try to call functions for this. if we get a table working today. then we see if the sandbox code will translate here. let's get there first.
+ *  2) After we clean the format,we should create some new assets of our team logos. Let's name them the same as the team names so we can call them easier. Bonus
+ *  points if you can clean up the logos but honestly maybe don't I want to finish this project asap. We can clean up later always.
+ *  2a) We'll havce to spend some time designing how we're going to insert the team's logo/name on top of the table. If we do this job well it'll make part 3 not as hard.
+ *  3) We might take a little trip back to the webscrapers and go get the salary cap for all the teams.
+ *  4) Then similiar to step 2, put the salary cap over the roster, but below the team/logo
+ *
+ *  Let's get there before talking more.
  *
  */
 for(let i = 0; i < teamsToCreate; i++) {
+    generateRosterHeader(teamDatabase[i]);
      //get path to our JSON database. I wanted to not use jQuery but it was just really easy here.
     $.getJSON("./players.json", function (teams) {
         const players = teams.filter(team => team.Team.match(teamDatabase[i]));
@@ -90,9 +104,6 @@ for(let i = 0; i < teamsToCreate; i++) {
 let playerSelected = document.querySelectorAll("[class^='playerTable']");
 console.log(playerSelected)
 for(const tr of playerSelected){
-
-
-    console.log('?');
     tr.addEventListener('click', function(e){
         if(e.path[1].classList.contains('tradeSelected')){
             e.path[1].classList.remove('tradeSelected')
