@@ -13,55 +13,6 @@ h1{
   text-align:center;
 }
 
-/*selector for each trade row*/
-
-
-table. thead, tbody{
-    display:flex;
-  margin: 0 15px;
-}
-thead, tr, td{
-  border: 1px solid black;
-}
-
-.roster-container{
-   display: flex;
-   justify-content: flex-start;
-   flex-wrap: wrap;
-   flex-direction: row;
-   margin: 0 10px;
-}
-
-.top-container{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-}
-
-.hidden-divider{
-  margin: 0.1rem;
-}
-
-.trade-block-container{
- display: flex;
-}
-
-.tradeSelected{
-  background-color: rgba(180,195,217,0.49);
-}
-table tr:hover{
-  background-color: white;
-}
-.playerTable tr:hover{
-  background-color: yellow;
-
-}
-
-.playerTable tbody.selected{
-  background-color: deepskyblue;
-}
-
 .trade-button{
   font-family: "Architects Daughter", sans-serif;
   display:inline;
@@ -71,7 +22,6 @@ table tr:hover{
   background-color: #ffffff;
   border:dashed;
   border-color: #e8ebed;
-
   height: 50px;
   width: 30%;
 }
@@ -97,8 +47,7 @@ table tr:hover{
   margin: 0 -10px;
 }
 
-
-/* we want each division to be 1/3 the page so account for margins and calculate 1/3 page - 30 pixels 
+/* we want each division to be 1/3 the page so account for margins and calculate 1/3 page - 30 pixels
 (anything less won't give me the 3 x 2 layout, but subtracting more doesn't change anything?) */
 .division {
   margin: 0 15px;
@@ -124,10 +73,44 @@ table tr:hover{
 /*pad some room after the logo*/
 .team__logo {
   z-index: -1;
-  
   margin-right: 10px;
 }
 
 .selected{
  /*someday may want to change select color*/
+}
+
+/* From here on this is for INDEX_SCRIPT.JS and TRADE.HTML */
+
+ tr, td{
+  border: 1px solid black;
+}
+
+.roster-container{
+  display:flex;
+  flex-direction: row;
+}
+
+.team-trade{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.top-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+}
+
+.hidden-divider{
+  margin: 0.1rem;
+}
+
+.tradeSelected{
+  background-color: rgba(180,195,217,0.49);
+}
+table tr:hover{
+  background-color: white;
 }

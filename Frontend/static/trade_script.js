@@ -28,7 +28,7 @@ function generatePlayerTableHead(table, data){
 //for now we're just going to hardcode a few attributes.
 function generatePlayerTable(table, data){
 
-    table.innerHTML = data.map(player =>
+    table.innerHTML += data.map(player =>
     `
     <tr>
         <td><img src="${player.Picture}" height="50px" width="40px" <br> ${player.Name} <br> ${player.Position} </td>
@@ -55,8 +55,8 @@ $(document).ready(function(){
     });
   });
 
-function generateRosterHeader(teamName){
-    const rosterHeader = document.querySelector(".trade-block-container");
+function generateRosterHeader(teamName, index){
+    const rosterHeader = document.querySelector(".team-salary" + index );
     console.log(teamName)
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
@@ -66,6 +66,7 @@ function generateRosterHeader(teamName){
     `
     });
 }
+
       //gets the selected teams from the index.html page.
 const teamDatabase = JSON.parse(localStorage.getItem('selectedTeams'));
 const teamsToCreate = teamDatabase.length ; //account for 0 index
@@ -92,12 +93,12 @@ let teamTables = [firstTeam, secondTeam, thirdTeam, forthTeam];
  *
  */
 for(let i = 0; i < teamsToCreate; i++) {
-    generateRosterHeader(teamDatabase[i]);
+    generateRosterHeader(teamDatabase[i], i );
      //get path to our JSON database. I wanted to not use jQuery but it was just really easy here.
     $.getJSON("./players.json", function (teams) {
         const players = teams.filter(team => team.Team.match(teamDatabase[i]));
         generatePlayerTable(teamTables[i], players);
-        generatePlayerTableHead(teamTables[i], players);
+        generatePlayerTableHead(teamTables[i], players, teamDatabase[i]);
     });
 }
 
