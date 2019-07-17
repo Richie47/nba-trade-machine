@@ -56,7 +56,9 @@ $(document).ready(function(){
   });
 
 function generateRosterHeader(teamName, index){
-    const rosterHeader = document.querySelector(".team-salary" + index );
+    const divs = document.getElementsByClassName("team-salary");
+    console.log(divs[index])
+    let rosterHeader =  divs[index];
     console.log(teamName)
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
