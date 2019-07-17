@@ -57,15 +57,21 @@ $(document).ready(function(){
 
 function generateRosterHeader(teamName, index){
     const divs = document.getElementsByClassName("team-salary");
-    console.log(divs[index])
     let rosterHeader =  divs[index];
-    console.log(teamName)
+
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
+         console.log(teamRoster)
          rosterHeader.innerHTML += `
           ${teamRoster[0].Team}            
           <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px" alt="${teamRoster[0].Team}"/>
     `
+    });
+    $.getJSON("./salary_cap.json", function (teams) {
+        const teamSalary = teams.teamSalaries.filter(team => team.Team.match(teamName));
+        console.log(teamSalary)
+        rosterHeader.innerHTML += ` <br>
+        Salary Cap: ${teamSalary[0].Salary_Cap}  Cap Space Available: ${teamSalary[0]["Cap Space"]}`
     });
 }
 

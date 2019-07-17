@@ -6,6 +6,7 @@ var reload = require('reload'); //npm install -g --save-dev reload
 app.use(express.static(path.join(__dirname, "static")));
 app.use(express.static(path.join(__dirname,'./images')));
 app.use(express.static(path.join(__dirname, './logos')));
+app.use(express.static(path.join(__dirname, './salary_cap')));
 
 
 var server = http.createServer(app);
