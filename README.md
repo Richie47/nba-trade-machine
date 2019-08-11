@@ -5,24 +5,24 @@ Currently working on a raw demo, no distinct timeline yet this is just a fun sid
 
 Backend goals:
 
-# Scrape general information on players [DONE]
+### Scrape general information on players [DONE]
 
-# Export information to SQL [DONE]
+### Export information to SQL [DONE]
 
-# Clean up data and either send the database or a .json file of the data
+### Clean up data and either send the database or a .json file of the data
 
-# Find a more reliable scraping method
+### Find a more reliable scraping method
 
-# Sync updating scraper to database
+### Sync updating scraper to database
 
 Frontend goals:
 
-# Create a functioning home page for the user to select teams for trades [DONE]
+### Create a functioning home page for the user to select teams for trades [DONE]
 
-# Create a working server to connect multiple pages together [DONE]
+### Create a working server to connect multiple pages together [DONE]
 
-# A generic algorithm that be able to parse through the SQL database or a .json file and create a team roster automatically [DONE]
+### A generic algorithm that be able to parse through the SQL database or a .json file and create a team roster automatically [DONE]
 
-# Implement trade logic
+### Implement trade logic
 
-# Be able to extract database information to update automatically when rosters change
+### Be able to extract database information to update automatically when rosters change
