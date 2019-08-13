@@ -31,15 +31,13 @@ function generatePlayerTable(table, data){
     table.innerHTML += data.map(player =>
     `
     <tr>
-        <td><img src="${player.Picture}" height="50px" width="40px" <br> ${player.Name} <br> ${player.Position} </td>
+        <td><img src="${player.Picture}" height="50px" width="40px" <br> ${player.Name} <br> ${player.Position} <br> </td>
         <td>${formatter.format(player.Salary)} </td>
         <td>${player.PER}</td>
     </tr>    
     `).join("")
 
 }
-
-
 
   //event listener for second page
 $(document).ready(function(){
@@ -61,7 +59,6 @@ function generateRosterHeader(teamName, index){
 
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
-         console.log(teamRoster)
          rosterHeader.innerHTML += `
           ${teamRoster[0].Team}            
           <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px" alt="${teamRoster[0].Team}"/>
@@ -69,7 +66,6 @@ function generateRosterHeader(teamName, index){
     });
     $.getJSON("./salary_cap.json", function (teams) {
         const teamSalary = teams.teamSalaries.filter(team => team.Team.match(teamName));
-        console.log(teamSalary)
         rosterHeader.innerHTML += ` <br>
         Salary Cap: ${teamSalary[0].Salary_Cap}  Cap Space Available: ${teamSalary[0]["Cap Space"]}`
     });
@@ -90,14 +86,19 @@ let teamTables = [firstTeam, secondTeam, thirdTeam, forthTeam];
 
 
 /**
+ * so it's been a while. We got the roster pic + salary cap like a week ago.
  *
- *  2) After we clean the format,we should create some new assets of our team logos. Let's name them the same as the team names so we can call them easier. Bonus
- *  points if you can clean up the logos but honestly maybe don't I want to finish this project asap. We can clean up later always.
- *  2a) We'll havce to spend some time designing how we're going to insert the team's logo/name on top of the table. If we do this job well it'll make part 3 not as hard.
- *  3) We might take a little trip back to the webscrapers and go get the salary cap for all the teams.
- *  4) Then similiar to step 2, put the salary cap over the roster, but below the team/logo
+ * The last of our UI which does tie into trade logic. We need to be able to click a player and well two
+ * 1) have the player, picture, and salary neatly put above a different team
+ * 2) create some form of interface that allows you to choose which team for multi team cases.
+ * bonus if you only make itnerface work for 3+ teams only. We'll leave out the trade logic for this moment, but keep in mind we probably
+ * want a counter of the salary traded.
  *
- *  Let's get there before talking more.
+ * I was thinking of adding when clicked to a special selector.
+ * First of all, we need to figure out how to figure out what table the player selected came from.
+ * Then we need to think of how we're going to get him on top of another team. For now let's just worry about 2 team case.
+ *
+ *
  *
  */
 for(let i = 0; i < teamsToCreate; i++) {
@@ -111,17 +112,34 @@ for(let i = 0; i < teamsToCreate; i++) {
 }
 
 let playerSelected = document.querySelectorAll("[class^='playerTable']");
-console.log(playerSelected)
+let tradeBlock = [];
+let newTradeBlock = [];
+
 for(const tr of playerSelected){
     tr.addEventListener('click', function(e){
+        const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
         if(e.path[1].classList.contains('tradeSelected')){
+            console.log('yoo')
             e.path[1].classList.remove('tradeSelected')
+            newTradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
+            tradeBlock = newTradeBlock;
+            //console.log(newTradeBlock)
+             document.querySelector(".confirm-trade").innerHTML = newTradeBlock.join("");
         }
         else{
-            e.path[1].classList.add('tradeSelected')
+            console.log('in else')
+            e.path[1].classList.add('tradeSelected');
+            tradeBlock.push(clickedPlayer);
+            //console.log(tradeBlock)
+            document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
         }
-
-    console.log(e.path[1].querySelectorAll('td')[1].innerHTML)
+        console.log(e.path[4])
+        let demo = e.path[4].innerHTML.toString()
+        //demo = demo.substring(0,50)
+        const res = demo.match(/playerTable.?/g);
+        console.log(res.toString())
+//        console.log(e.target.parentElement.parentElement.parentElement)
+        //console.log(x.replace(/\D/g, ''))  regex for removing currency format on salary
     })
 }
 
