@@ -71,7 +71,8 @@ function findAvailableTeams(currentTeam){
  * NOTE: it was better practice to split this up even more.
  */
 function showAvailableTeams(availableTeams){
-    let tradeModalContent = document.querySelector(".trade-modal-content");
+    let tradeModalContent = document.querySelector(".target-teams");
+    tradeModalContent.innerHTML = "";
 
     for(const newTeam in availableTeams){
         $.getJSON("./logos.json", function (teams) {
@@ -81,8 +82,6 @@ function showAvailableTeams(availableTeams){
           <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px"/>
     `
 });
-        const closeButton = document.querySelector(".close-button");
-        closeButton.addEventListener("click", toggleModal);
         console.log('out here')
 }};
 
