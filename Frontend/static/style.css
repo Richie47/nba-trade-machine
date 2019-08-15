@@ -147,9 +147,17 @@ table{
     cursor: pointer;
     border-radius: 0.25rem;
     background-color: lightgray;
+    position:relative;
+    z-index: 2;
 }
 .close-button:hover {
     background-color: darkgray;
+}
+
+.trade-modal-content h3{
+    display: block;
+    width: 50%;
+    margin:0;
 }
 /* animation for trade-modal */
 .show-modal {
@@ -157,4 +165,9 @@ table{
     visibility: visible;
     transform: scale(1.0);
     transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.confirm-trade-container{
+    display:flex;
+    flex-direction: row;
 }

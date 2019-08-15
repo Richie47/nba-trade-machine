@@ -17,13 +17,76 @@ let playerSelected = document.querySelectorAll("[class^='playerTable']");
 let tradeBlock = [];
 let newTradeBlock = [];
 
+//GLOBAL MAP (KEY = ROSTER TABLE) -> (VALUE = TEAM NAME)
+let rosterTeamMap = mapTeamRosterPair(teamDatabase,teamsToCreate,teamTables);
+
 const modal = document.querySelector(".trade-modal");
 const closeButton = document.querySelector(".close-button");
+try {
 closeButton.addEventListener("click", toggleModal);
-
+}
+catch(error){
+    console.error(error)
+}
 /*  END OF GLOBAL VARIABLES */
 
 /* GLOBAL PROCESSES BELOW */
+
+//create a key-value pairing of roster tables and team assigned
+//@param the array of selected teams from index.html, the length of the selected teams array
+//@method we assign each key to be one of the roster table names, and associate the value with the team name it's currently hosting
+//@return the map containing a roster-team key-value pair for global use
+function mapTeamRosterPair(teamDatabase, teamsToCreate) {
+    let rosterTeamMap = new Map();
+
+    for(let i = 0; i < teamsToCreate; i++){
+        rosterTeamMap.set(`playerTable${i+1}`, {teamName:teamDatabase[i], tradeBlock:[]});
+    }
+
+    return rosterTeamMap;
+}
+
+/**
+ * @param currentTeam - String of the roster table the trade target came from
+ * @method - iterate through the map rosterTeamMap and add all non matching team name value pairs to an array
+ * @return Array a string array that contains all the possible teams the target can be traded too.
+ */
+function findAvailableTeams(currentTeam){
+    let availableTeams = [];
+    //for every key value pair in the rosterTeamMap
+    for(const [key,value] of rosterTeamMap){
+       if(key == currentTeam){/**continue to next key if any remain. Not trading the player to the same team.*/}
+       //otherwise we add the key's value->teamName into the array
+       else{
+          availableTeams.push(value.teamName);
+       }
+    }
+    return availableTeams;
+}
+
+/**
+ * @param availableTeams - string array containing all potential teams a target can be traded too
+ * @method - iterate through availableTeams and grab each team's corresponding logo from logos.json
+ * Then we will append the logo onto the trade-modal screen to give users a selection of where to put the traded player.
+ * NOTE: it was better practice to split this up even more.
+ */
+function showAvailableTeams(availableTeams){
+    let tradeModalContent = document.querySelector(".trade-modal-content");
+
+    for(const newTeam in availableTeams){
+        $.getJSON("./logos.json", function (teams) {
+            const teamRoster= teams.filter(team =>  team.Team.match(availableTeams[newTeam]));
+
+          tradeModalContent.innerHTML += `
+          <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px"/>
+    `
+});
+        const closeButton = document.querySelector(".close-button");
+        closeButton.addEventListener("click", toggleModal);
+        console.log('out here')
+}};
+
+//ROSTER TEMPLATE MAKER, go through each team and get the appropriate player data to fill out the table for each team
 for(let i = 0; i < teamsToCreate; i++) {
     generateRosterHeader(teamDatabase[i], i );
      //get path to our JSON database. I wanted to not use jQuery but it was just really easy here.
@@ -37,35 +100,36 @@ for(let i = 0; i < teamsToCreate; i++) {
 for(const tr of playerSelected){
     tr.addEventListener('click', function(e){
         const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
-        tr.addEventListener("click", toggleModal)
+        let rosterTableFinder = e.path[4].innerHTML.toString()
+        const rosterTable = rosterTableFinder.match(/playerTable.?/g);
+        const availableTeams = findAvailableTeams(rosterTable);
+        showAvailableTeams(availableTeams);
         if(e.path[1].classList.contains('tradeSelected')){
-            console.log('yoo')
             e.path[1].classList.remove('tradeSelected')
-            newTradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
-            tradeBlock = newTradeBlock;
-            //console.log(newTradeBlock)
-             document.querySelector(".confirm-trade").innerHTML = newTradeBlock.join("");
+            tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
+            document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
         }
         else{
             console.log('in else')
             e.path[1].classList.add('tradeSelected');
             tradeBlock.push(clickedPlayer);
-            //console.log(tradeBlock)
             document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
+            toggleModal();
         }
-        console.log(e.path[4])
-        let demo = e.path[4].innerHTML.toString()
+
         //demo = demo.substring(0,50)
-        const res = demo.match(/playerTable.?/g);
-        console.log(res.toString())
+
+        //console.log(res.toString())
 //        console.log(e.target.parentElement.parentElement.parentElement)
         //console.log(x.replace(/\D/g, ''))  regex for removing currency format on salary
     })
 }
 
+const test = document.querySelectorAll(".confirm-trade");
 /*END GLOBAL PROCESSES*/
 
 function toggleModal(){
+    console.log("togglemodal called")
     modal.classList.toggle("show-modal")
 }
 
@@ -128,7 +192,7 @@ function generateRosterHeader(teamName, index){
     });
 }
 
-/**TODO: Honestly don't know wtf this code does, figure out if we need it still
+/**TODO: Honestly don't know if this code is needed anymore, decide if we should keep it.
   //event listener for second page
 $(document).ready(function(){
     $('.test').click(function(e){

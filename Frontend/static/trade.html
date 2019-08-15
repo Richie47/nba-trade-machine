@@ -6,10 +6,7 @@
 </head>
 
 <body>
-<script src="{process.env.BROWSER_REFRESH_URL}"></script>
-<script type="module" src ="trade_script.js"></script>
-<script type="module" src="index_script.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
 
 <div class="top-container">
     <div class="home-link">
@@ -17,14 +14,22 @@
     </div>
     <div class="hidden-divider"></div>
     <button class="test">TRADE</button>
+    <div class="confirm-trade-container">
     <div class="confirm-trade">
+    </div>
+    <div class="confirm-trade">
+    </div>
+    <div class="confirm-trade">
+    </div>
+    <div class="confirm-trade">
+    </div>
     </div>
     <div class="hidden-divider"></div>
     <div class="trade-block-container">
     </div>
     <div class="trade-modal">
         <div class="trade-modal-content">
-            <span class="close-button">x</span>
+            <div class="close-button">x</div>
             <h3>Select team to trade to:</h3>
             <br>
         </div>
@@ -37,25 +42,33 @@
 
 <div class="roster-container">
     <div class="team-trade">
+        <div class="incoming-trade"></div>
         <div class="team-salary"></div>
         <table class="playerTable1"></table>
     </div>
 
     <div class="team-trade">
+        <div class="incoming-trade"></div>
         <div class="team-salary"></div>
         <table class="playerTable2"></table>
     </div>
 
     <div class="team-trade">
+        <div class="incoming-trade"></div>
         <div class="team-salary"></div>
         <table class="playerTable3"></table>
     </div>
 
     <div class="team-trade">
+        <div class="incoming-trade"></div>
         <div class="team-salary"></div>
         <table class="playerTable4"></table>
     </div>
 </div>
-
+<script src="{process.env.BROWSER_REFRESH_URL}"></script>
+<script type="module" src ="trade_script.js"></script>
+<script type="module" src="index_script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </body>
+
 </html>
