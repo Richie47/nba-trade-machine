@@ -15,7 +15,6 @@ const forthTeam = document.querySelector('.playerTable4');
 const teamTables = [firstTeam, secondTeam, thirdTeam, forthTeam];
 let playerSelected = document.querySelectorAll("[class^='playerTable']");
 let tradeBlock = [];
-let newTradeBlock = [];
 
 //GLOBAL MAP (KEY = ROSTER TABLE) -> (VALUE = TEAM NAME)
 let rosterTeamMap = mapTeamRosterPair(teamDatabase,teamsToCreate,teamTables);
@@ -64,26 +63,64 @@ function findAvailableTeams(currentTeam){
     return availableTeams;
 }
 
+
+function addToTradeBlock(team, player,playerSelector){
+  for(const [key,value] of rosterTeamMap){
+      console.log(value.tradeBlock)
+      if(value.teamName == team){
+          let tradeBlockSelector = key.substring(key.length-1,key.length);
+          value.tradeBlock.push(player);
+          document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
+          playerSelector.classList.add("tradeSelected");
+          toggleModal()
+        }
+      }
+  }
+
+  function removeFromTradeBlock(team, player, playerSelector){
+    for(const [key,value] of rosterTeamMap){
+        console.log(team[0])
+        if(key == team[0]){
+            console.log("my nigga " + value.tradeBlock )
+
+
+            let tradeBlockSelector = key.substring(key.length-1, key.length);
+
+            value.tradeBlock = value.tradeBlock.filter((player) => player != clickedPlayer);
+            //document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
+            playerSelector.classList.remove('tradeSelected');
+        }
+    }
+  }
+
 /**
  * @param availableTeams - string array containing all potential teams a target can be traded too
  * @method - iterate through availableTeams and grab each team's corresponding logo from logos.json
  * Then we will append the logo onto the trade-modal screen to give users a selection of where to put the traded player.
- * NOTE: it was better practice to split this up even more.
  */
-function showAvailableTeams(availableTeams){
+function showAvailableTeams(availableTeams, player, playerSelector) {
     let tradeModalContent = document.querySelector(".target-teams");
     tradeModalContent.innerHTML = "";
 
-    for(const newTeam in availableTeams){
-        $.getJSON("./logos.json", function (teams) {
-            const teamRoster= teams.filter(team =>  team.Team.match(availableTeams[newTeam]));
-
-          tradeModalContent.innerHTML += `
-          <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px"/>
+    $.getJSON("./logos.json", teams => {
+        for (const newTeam in availableTeams) {
+            const teamRoster = teams.filter(team => team.Team.match(availableTeams[newTeam]));
+            tradeModalContent.innerHTML += `
+          <img class="test2-class" data-team="${availableTeams[newTeam]}" id="team-trade-logo"
+           src="${teamRoster[0].Logo}" height="50px" width="55px"/>
     `
-});
-        console.log('out here')
-}};
+
+            let test = document.querySelectorAll(".test2-class");
+            for (let elem of test) {
+                elem.addEventListener("click", (evt => {
+                    addToTradeBlock(evt.target.dataset.team, player,playerSelector)
+                }))
+
+            }
+        }
+    });
+}
+
 
 //ROSTER TEMPLATE MAKER, go through each team and get the appropriate player data to fill out the table for each team
 for(let i = 0; i < teamsToCreate; i++) {
@@ -101,24 +138,26 @@ for(const tr of playerSelected){
         const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
         let rosterTableFinder = e.path[4].innerHTML.toString()
         const rosterTable = rosterTableFinder.match(/playerTable.?/g);
-        const availableTeams = findAvailableTeams(rosterTable);
-        showAvailableTeams(availableTeams);
+        console.log("yo this is it : " + rosterTable)
         if(e.path[1].classList.contains('tradeSelected')){
-            e.path[1].classList.remove('tradeSelected')
-            tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
-            document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
+            console.log(rosterTable)
+            removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1])
+           // e.path[1].classList.remove('tradeSelected')
+            //tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
+           // document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
         }
         else{
-            console.log('in else')
-            e.path[1].classList.add('tradeSelected');
-            tradeBlock.push(clickedPlayer);
-            document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
+            const availableTeams = findAvailableTeams(rosterTable);
+            showAvailableTeams(availableTeams, clickedPlayer, e.path[1]);
+//            e.path[1].classList.add('tradeSelected');
+//            tradeBlock.push(clickedPlayer);
+            //document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
             toggleModal();
         }
 
         //demo = demo.substring(0,50)
 
-        //console.log(res.toString())
+        //j.log(res.toString())
 //        console.log(e.target.parentElement.parentElement.parentElement)
         //console.log(x.replace(/\D/g, ''))  regex for removing currency format on salary
     })
