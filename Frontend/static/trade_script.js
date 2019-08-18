@@ -79,19 +79,14 @@ function addToTradeBlock(team, player,playerSelector){
 
   function removeFromTradeBlock(team, player, playerSelector){
     for(const [key,value] of rosterTeamMap){
-        console.log(team[0])
-        if(key == team[0]){
-            console.log("my nigga " + value.tradeBlock )
-
 
             let tradeBlockSelector = key.substring(key.length-1, key.length);
 
-            value.tradeBlock = value.tradeBlock.filter((player) => player != clickedPlayer);
-            //document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
+            value.tradeBlock = value.tradeBlock.filter((currentPlayer) => currentPlayer != player);
+            document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
             playerSelector.classList.remove('tradeSelected');
         }
     }
-  }
 
 /**
  * @param availableTeams - string array containing all potential teams a target can be traded too
@@ -138,7 +133,6 @@ for(const tr of playerSelected){
         const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
         let rosterTableFinder = e.path[4].innerHTML.toString()
         const rosterTable = rosterTableFinder.match(/playerTable.?/g);
-        console.log("yo this is it : " + rosterTable)
         if(e.path[1].classList.contains('tradeSelected')){
             console.log(rosterTable)
             removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1])
