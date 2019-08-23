@@ -65,16 +65,26 @@ function findAvailableTeams(currentTeam){
 }
 
 
-function addToTradeBlock(team, player,playerSelector){
+function addToTradeBlock(team, player,playerSelector, playerSalary, rosterTable){
   for(const [key,value] of rosterTeamMap){
-      console.log(value.tradeBlock)
+      console.log(key)
+
+      let tradeBlockSelector = key.substring(key.length-1,key.length);
+      if(key == rosterTable){
+         let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
+         value.inTradeSalary = value.inTradeSalary + parseInt(playerSalary);
+         outgoingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.inTradeSalary);
+      }
       if(value.teamName == team){
-          let tradeBlockSelector = key.substring(key.length-1,key.length);
           value.tradeBlock.push(player);
           document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
           playerSelector.classList.add("tradeSelected");
           toggleModal();
+          value.outTradeSalary = value.outTradeSalary + parseInt(playerSalary);
+          let incomingSalarySelector = document.querySelectorAll(".income-salary");
+          incomingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.outTradeSalary);
         }
+
       }
   }
 
@@ -82,7 +92,7 @@ function addToTradeBlock(team, player,playerSelector){
     for(const [key,value] of rosterTeamMap){
 
             let tradeBlockSelector = key.substring(key.length-1, key.length);
-
+            console.log("hi there " + value.tradeBlock.includes(player))
             value.tradeBlock = value.tradeBlock.filter((currentPlayer) => currentPlayer != player);
             document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
             playerSelector.classList.remove('tradeSelected');
@@ -107,7 +117,7 @@ function addToTradeBlock(team, player,playerSelector){
  * @method - iterate through availableTeams and grab each team's corresponding logo from logos.json
  * Then we will append the logo onto the trade-modal screen to give users a selection of where to put the traded player.
  */
-function showAvailableTeams(availableTeams, player, playerSelector) {
+function showAvailableTeams(availableTeams, player, playerSelector, playerSalary, rosterTable) {
     let tradeModalContent = document.querySelector(".target-teams");
     tradeModalContent.innerHTML = "";
 
@@ -122,14 +132,13 @@ function showAvailableTeams(availableTeams, player, playerSelector) {
             let test = document.querySelectorAll(".test2-class");
             for (let elem of test) {
                 elem.addEventListener("click", (evt => {
-                    addToTradeBlock(evt.target.dataset.team, player,playerSelector)
+                    addToTradeBlock(evt.target.dataset.team, player,playerSelector, playerSalary, rosterTable)
                 }))
 
             }
         }
     });
 }
-
 
 //ROSTER TEMPLATE MAKER, go through each team and get the appropriate player data to fill out the table for each team
 for(let i = 0; i < teamsToCreate; i++) {
@@ -141,7 +150,6 @@ for(let i = 0; i < teamsToCreate; i++) {
         generatePlayerTableHead(teamTables[i], players, teamDatabase[i]);
     });
 }
- let outcomeSal = 0;
 for(const tr of playerSelected){
     tr.addEventListener('click', function(e){
         const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
@@ -149,7 +157,6 @@ for(const tr of playerSelected){
         const rosterTable = rosterTableFinder.match(/playerTable.?/g); //search for the part of html that says the playerTable the target's on
         let playerSalary = e.path[1].querySelectorAll('td')[1].innerHTML;
 
-        let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
         let currentIndex = rosterTable.toString().substring(rosterTable.toString().length-1, rosterTable.toString().length);
         console.log("curr: " +  currentIndex);
         //j.log(res.toString())
@@ -157,17 +164,15 @@ for(const tr of playerSelected){
         if(e.path[1].classList.contains('tradeSelected')){
             console.log(rosterTable)
             removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1], playerSalary)
-            outcomeSal = parseInt(outcomeSal) - parseInt(playerSalary);
-            outgoingSalarySelector[currentIndex-1].innerHTML = formatter.format(outcomeSal)
            // e.path[1].classList.remove('tradeSelected')
             //tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
            // document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
         }
         else{
-            outcomeSal = parseInt(outcomeSal) +  parseInt(playerSalary);
+            //outcomeSal = parseInt(outcomeSal) +  parseInt(playerSalary);
             const availableTeams = findAvailableTeams(rosterTable);
-            showAvailableTeams(availableTeams, clickedPlayer, e.path[1], playerSalary);
-            outgoingSalarySelector[currentIndex-1].innerHTML = formatter.format(outcomeSal);
+            showAvailableTeams(availableTeams, clickedPlayer, e.path[1], playerSalary, rosterTable);
+            //outgoingSalarySelector[currentIndex-1].innerHTML = formatter.format(outcomeSal);
 //            e.path[1].classList.add('tradeSelected');
 //            tradeBlock.push(clickedPlayer);
             //document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
