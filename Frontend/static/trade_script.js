@@ -72,45 +72,47 @@ function addToTradeBlock(team, player,playerSelector, playerSalary, rosterTable)
       let tradeBlockSelector = key.substring(key.length-1,key.length);
       if(key == rosterTable){
          let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
-         value.inTradeSalary = value.inTradeSalary + parseInt(playerSalary);
-         outgoingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.inTradeSalary);
+         value.outTradeSalary = value.outTradeSalary + parseInt(playerSalary);
+         outgoingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.outTradeSalary);
       }
       if(value.teamName == team){
           value.tradeBlock.push(player);
           document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
           playerSelector.classList.add("tradeSelected");
           toggleModal();
-          value.outTradeSalary = value.outTradeSalary + parseInt(playerSalary);
+          value.inTradeSalary = value.inTradeSalary + parseInt(playerSalary);
           let incomingSalarySelector = document.querySelectorAll(".income-salary");
-          incomingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.outTradeSalary);
+          incomingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.inTradeSalary);
         }
 
       }
   }
 
-  function removeFromTradeBlock(team, player, playerSelector){
+  function removeFromTradeBlock(team, player, playerSelector, playerSalary){
+
     for(const [key,value] of rosterTeamMap){
-
             let tradeBlockSelector = key.substring(key.length-1, key.length);
-            console.log("hi there " + value.tradeBlock.includes(player))
-            value.tradeBlock = value.tradeBlock.filter((currentPlayer) => currentPlayer != player);
-            document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
-            playerSelector.classList.remove('tradeSelected');
+            console.log( key + " " + value.inTradeSalary)
+
+            if(key == team){
+                let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
+                value.outTradeSalary = value.outTradeSalary - parseInt(playerSalary);
+                outgoingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.outTradeSalary);
+            }
+            //if the tradeblock contains the player we want to remove, we know thats the roster we want to modify
+            if(value.tradeBlock.includes(player)) {
+                let incomingSalarySelector = document.querySelectorAll(".income-salary");
+
+                value.inTradeSalary = parseInt(value.inTradeSalary) - parseInt(playerSalary);
+                incomingSalarySelector[tradeBlockSelector - 1].innerHTML = formatter.format(value.inTradeSalary);
+                value.tradeBlock = value.tradeBlock.filter((currentPlayer) => currentPlayer != player);
+                document.querySelectorAll(".incoming-trade")[tradeBlockSelector - 1].innerHTML = value.tradeBlock.join("");
+                playerSelector.classList.remove('tradeSelected');
+            }
+
         }
     }
 
-    function modifyIncomingSalary(incomingSalary, currentTeam, addOrSub){
-        if(addOrSub == "add"){
-            //do adding stuff here
-        }
-        else if(addOrSub == "sub"){
-            //do subtracting stuff here
-        }
-
-        else{
-           console.error("ERROR function modifyIncomingSalary called without specifying modification type.")
-        }
-    }
 
 /**
  * @param availableTeams - string array containing all potential teams a target can be traded too
