@@ -33,13 +33,14 @@ catch(error){
 
 //create a key-value pairing of roster tables and team assigned
 //@param the array of selected teams from index.html, the length of the selected teams array
-//@method we assign each key to be one of the roster table names, and associate the value with the team name it's currently hosting
+//@method we assign each key to be one of the roster table names, associate the value with the team name it's currently hosting, and an int that
+// will keep track of incoming salary from trades
 //@return the map containing a roster-team key-value pair for global use
 function mapTeamRosterPair(teamDatabase, teamsToCreate) {
     let rosterTeamMap = new Map();
 
     for(let i = 0; i < teamsToCreate; i++){
-        rosterTeamMap.set(`playerTable${i+1}`, {teamName:teamDatabase[i], tradeBlock:[]});
+        rosterTeamMap.set(`playerTable${i+1}`, {teamName:teamDatabase[i], tradeBlock:[], outTradeSalary: 0, inTradeSalary: 0 });
     }
 
     return rosterTeamMap;
@@ -70,9 +71,9 @@ function addToTradeBlock(team, player,playerSelector){
       if(value.teamName == team){
           let tradeBlockSelector = key.substring(key.length-1,key.length);
           value.tradeBlock.push(player);
-          document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
+          document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
           playerSelector.classList.add("tradeSelected");
-          toggleModal()
+          toggleModal();
         }
       }
   }
@@ -83,8 +84,21 @@ function addToTradeBlock(team, player,playerSelector){
             let tradeBlockSelector = key.substring(key.length-1, key.length);
 
             value.tradeBlock = value.tradeBlock.filter((currentPlayer) => currentPlayer != player);
-            document.querySelectorAll(".confirm-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
+            document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML = value.tradeBlock.join("");
             playerSelector.classList.remove('tradeSelected');
+        }
+    }
+
+    function modifyIncomingSalary(incomingSalary, currentTeam, addOrSub){
+        if(addOrSub == "add"){
+            //do adding stuff here
+        }
+        else if(addOrSub == "sub"){
+            //do subtracting stuff here
+        }
+
+        else{
+           console.error("ERROR function modifyIncomingSalary called without specifying modification type.")
         }
     }
 
@@ -127,41 +141,52 @@ for(let i = 0; i < teamsToCreate; i++) {
         generatePlayerTableHead(teamTables[i], players, teamDatabase[i]);
     });
 }
-
+ let outcomeSal = 0;
 for(const tr of playerSelected){
     tr.addEventListener('click', function(e){
         const clickedPlayer = e.path[1].querySelectorAll('td')[0].innerHTML;
-        let rosterTableFinder = e.path[4].innerHTML.toString()
-        const rosterTable = rosterTableFinder.match(/playerTable.?/g);
+        let rosterTableFinder = e.path[4].innerHTML.toString(); //return a portion of the target's html
+        const rosterTable = rosterTableFinder.match(/playerTable.?/g); //search for the part of html that says the playerTable the target's on
+        let playerSalary = e.path[1].querySelectorAll('td')[1].innerHTML;
+
+        let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
+        let currentIndex = rosterTable.toString().substring(rosterTable.toString().length-1, rosterTable.toString().length);
+        console.log("curr: " +  currentIndex);
+        //j.log(res.toString())
+        playerSalary = playerSalary.replace(/\D/g, '');// regex for removing currency format on salary
         if(e.path[1].classList.contains('tradeSelected')){
             console.log(rosterTable)
-            removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1])
+            removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1], playerSalary)
+            outcomeSal = parseInt(outcomeSal) - parseInt(playerSalary);
+            outgoingSalarySelector[currentIndex-1].innerHTML = formatter.format(outcomeSal)
            // e.path[1].classList.remove('tradeSelected')
             //tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
            // document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
         }
         else{
+            outcomeSal = parseInt(outcomeSal) +  parseInt(playerSalary);
             const availableTeams = findAvailableTeams(rosterTable);
-            showAvailableTeams(availableTeams, clickedPlayer, e.path[1]);
+            showAvailableTeams(availableTeams, clickedPlayer, e.path[1], playerSalary);
+            outgoingSalarySelector[currentIndex-1].innerHTML = formatter.format(outcomeSal);
 //            e.path[1].classList.add('tradeSelected');
 //            tradeBlock.push(clickedPlayer);
             //document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
             toggleModal();
+            console.log('yo')
         }
 
         //demo = demo.substring(0,50)
-
-        //j.log(res.toString())
-//        console.log(e.target.parentElement.parentElement.parentElement)
-        //console.log(x.replace(/\D/g, ''))  regex for removing currency format on salary
+        /**
+        let test=  document.querySelector(".income-salary");
+        x = formatter.format(x)
+        test.innerHTML = x;
+        **/
     })
 }
 
-const test = document.querySelectorAll(".confirm-trade");
 /*END GLOBAL PROCESSES*/
 
 function toggleModal(){
-    console.log("togglemodal called")
     modal.classList.toggle("show-modal")
 }
 
@@ -194,11 +219,27 @@ function generatePlayerTableHead(table, data){
 //TODO: When I'm ready to implement more data, I will need to set up my JSON file to contain only what I want to put on the roster.
 //for now we're just going to hardcode a few attributes.
 function generatePlayerTable(table, data){
+    for(const i in data){
+        if(data[i].Position == null){
+            data[i].Position = "-";
+        }
+        if(data[i].Salary == null){
+            data[i].Salary = "838464";
+        }
 
+        if(data[i].PER == ""){
+            data[i].PER = "0.0";
+        }
+
+        if(data[i].Age == null){
+            data[i].Age = "-";
+        }
+    }
     table.innerHTML += data.map(player =>
+
     `
     <tr>
-        <td><img src="${player.Picture}" height="50px" width="40px" <br> ${player.Name} <br> ${player.Position} <br> </td>
+        <td><img src="${player.Picture}" height="50px" width="40px" <br> ${player.Name} <br>  Age: ${player.Age}<br> Position: ${player.Position} <br> </td>
         <td>${formatter.format(player.Salary)} </td>
         <td>${player.PER}</td>
     </tr>    
@@ -213,14 +254,16 @@ function generateRosterHeader(teamName, index){
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
          rosterHeader.innerHTML += `
-          ${teamRoster[0].Team}            
+         <b> ${teamRoster[0].Team}</b>           
           <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px" alt="${teamRoster[0].Team}"/>
+           <br><b>INCOMING SALARY: </b><div class="income-salary">$0 </div>
+            <b>OUTGOING SALARY:</b><div class="outgoing-salary">$0</div>
     `
     });
     $.getJSON("./salary_cap.json", function (teams) {
         const teamSalary = teams.teamSalaries.filter(team => team.Team.match(teamName));
         rosterHeader.innerHTML += ` <br>
-        Salary Cap: ${teamSalary[0].Salary_Cap}  Cap Space Available: ${teamSalary[0]["Cap Space"]}`
+        <b>Salary Cap: </b>${teamSalary[0].Salary_Cap}  <b>Cap Space Available: </b>${teamSalary[0]["Cap Space"]}`
     });
 }
 
