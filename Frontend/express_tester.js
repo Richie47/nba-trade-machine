@@ -15,6 +15,8 @@ reload(app).then(function (reloadReturned) {
 var server = app.listen(8081, function () {
     var host = server.address().address
     var port = server.address().port
+    //for heroku
+    //const port = process.env.PORT || 3000
 
     console.log("Example app listening at http://%s:%s", host, port);
 

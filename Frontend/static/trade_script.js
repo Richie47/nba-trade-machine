@@ -1,6 +1,7 @@
 /**
  *GLOBAL VARIABLES BELOW
  */
+const salCap2019 = 132627000;
  //gets the selected teams from the index.html page.
 const teamDatabase = JSON.parse(localStorage.getItem('selectedTeams'));
 const teamsToCreate = teamDatabase.length ; //account for 0 index, integer of how many teams were selected from index.html
@@ -26,6 +27,102 @@ closeButton.addEventListener("click", toggleModal);
 }
 catch(error){
     console.error(error)
+}
+
+let executeTrade = document.querySelector(".trade");
+executeTrade.addEventListener("click", tryTrade);
+
+/**
+ *  master method of what happens when you click "Trade" button
+ */
+function tryTrade(){
+    let curSalDif = 0;
+    //call incoming-salary gatherer -> they call formatter, then decide how to add to a dictonary or something to access it, or just return an array
+    const teamSalaries = [];
+    const incSal = [];
+    const outSal = [];
+    //call outgoing-salary gatherer same thing
+
+    //need to create some form of trade logic, may have to break it up.
+    for(let i = 0; i < teamsToCreate; i++){
+        curSalDif = 0;
+        console.log(gatherTradeIncomeSalary(i));
+        console.log(gatherTradeOutgoingSalary(i));
+        console.log(gatherSalaryCap(i));
+        let curIncSal = Number(gatherTradeIncomeSalary(i));
+        let curOutSal = Number(gatherTradeOutgoingSalary(i));
+        let curSalCap = Number(gatherSalaryCap(i));
+        curSalDif = curIncSal - curOutSal;
+        curSalCap = curSalCap + curSalDif;
+        //hacky code if no salary is being moved we set it to 0 so it doesn't interfere with the trade logic
+        if(curSalDif === 0){
+            teamSalaries.push(0);
+        }
+        else {
+            teamSalaries.push(curSalCap);
+            incSal.push(curIncSal);
+            outSal.push(curOutSal);
+        }
+    }
+
+    for(let i = 0; i < teamSalaries.length; i++){
+        console.log("yo one" + teamSalaries[i]);
+        if(teamSalaries[i] == 0){
+            continue;
+        }
+
+        else{
+            if(isOverCap(teamSalaries[i]) === true){
+               //if the outgoing salary is within 0-6.5M
+               if(outSal[i] < 6533333){
+                   if(incSal[i] > outSal[i] * 1.75 + 100000){
+                       alert("over the cap")
+                   }
+               }
+
+               else if(outSal[i] > 6533334 && outSal[i] < 19600000){
+                   if(incSal[i] > outSal[i] + 5000000){
+                       alert("over the cap 2");
+                   }
+               }
+
+               else if(outSal[i] > 19600000 ){
+                   if(incSal[i] > outSal[i] * 1.25 + 100000){
+                       alert("over the cap 3");
+                   }
+               }
+            }
+        }
+    }
+
+
+}
+
+function isOverCap(curSalary){
+    if(curSalary > salCap2019){
+        return true;
+    }
+    return false;
+}
+
+function gatherSalaryCap(curTeam){
+    let curSalCap = document.querySelectorAll(".salary-cap")[curTeam].innerHTML;
+    curSalCap = stripCurrency(curSalCap);
+    return curSalCap;
+}
+
+function gatherTradeIncomeSalary(curTeam){
+    console.log(curTeam)
+    let curIncSal = document.querySelectorAll(".income-salary")[curTeam].innerHTML;
+    curIncSal = stripCurrency(curIncSal);
+    return curIncSal;
+}
+
+function gatherTradeOutgoingSalary(curTeam){
+    console.log(curTeam)
+    let curOutSal = document.querySelectorAll(".outgoing-salary")[curTeam].innerHTML;
+    curOutSal = stripCurrency(curOutSal);
+    return curOutSal;
 }
 /*  END OF GLOBAL VARIABLES */
 
@@ -79,7 +176,7 @@ function addToTradeBlock(team, player,playerSelector, playerSalary, rosterTable)
           value.tradeBlock.push(player);
           document.querySelectorAll(".incoming-trade")[tradeBlockSelector-1].innerHTML =  value.tradeBlock.join("");
           playerSelector.classList.add("tradeSelected");
-          toggleModal();
+          toggleModal(); //modal interface for what team to trade the player too
           value.inTradeSalary = value.inTradeSalary + parseInt(playerSalary);
           let incomingSalarySelector = document.querySelectorAll(".income-salary");
           incomingSalarySelector[tradeBlockSelector-1].innerHTML = formatter.format(value.inTradeSalary);
@@ -197,12 +294,24 @@ function toggleModal(){
     modal.classList.toggle("show-modal")
 }
 
-//used to take off the currency format of the player's salaries for the trade logic
+/**@param string or integer that needs to be converted to US currency
+* Usage: you can call like : formatter.format(<arg>)
+ * Note: If you feed a number or string that already contains currency format like $ or , it will return "$NaN"
+ */
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
   minimumFractionDigits: 0
 });
+
+/**
+ * @param currency, the value to remove the the currency formatting off using regex to strip anything that's not
+ * a number or period
+ * @returns a string that has the currency stripped, ex: $123,456 -> 123456
+ */
+function stripCurrency(currency){
+    return currency.replace(/[^0-9\.]+/g,"");
+}
 
 //Doesn't use data now, but left it as someday this will be the case, and it doesn't affect anything for this demo.
 function generatePlayerTableHead(table, data){
@@ -270,7 +379,7 @@ function generateRosterHeader(teamName, index){
     $.getJSON("./salary_cap.json", function (teams) {
         const teamSalary = teams.teamSalaries.filter(team => team.Team.match(teamName));
         rosterHeader.innerHTML += ` <br>
-        <b>Salary Cap: </b>${teamSalary[0].Salary_Cap}  <b>Cap Space Available: </b>${teamSalary[0]["Cap Space"]}`
+        <b>Salary Cap: </b><div class="salary-cap">${teamSalary[0].Salary_Cap} </div> <b>Cap Space Available: </b> <div class="cap-space">${teamSalary[0]["Cap Space"]}</div>`
     });
 }
 
