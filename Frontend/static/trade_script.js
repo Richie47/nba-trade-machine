@@ -21,6 +21,7 @@ let tradeBlock = [];
 let rosterTeamMap = mapTeamRosterPair(teamDatabase,teamsToCreate,teamTables);
 
 const modal = document.querySelector(".trade-modal");
+const resultModal = document.querySelector(".trade-result-modal");
 const closeButton = document.querySelector(".close-button");
 try {
 closeButton.addEventListener("click", toggleModal);
@@ -29,6 +30,13 @@ catch(error){
     console.error(error)
 }
 
+const closeResultButton = document.querySelector(".close-result-button");
+try {
+closeResultButton.addEventListener("click", toggleResultModal);
+}
+catch(error){
+    console.error(error)
+}
 let executeTrade = document.querySelector(".trade");
 executeTrade.addEventListener("click", tryTrade);
 
@@ -76,6 +84,7 @@ function tryTrade(){
                //if the outgoing salary is within 0-6.5M
                if(outSal[i] < 6533333){
                    if(incSal[i] > outSal[i] * 1.75 + 100000){
+                       toggleResultModal();
                        alert("over the cap")
                    }
                }
@@ -83,6 +92,7 @@ function tryTrade(){
                else if(outSal[i] > 6533334 && outSal[i] < 19600000){
                    if(incSal[i] > outSal[i] + 5000000){
                        alert("over the cap 2");
+                       toggleResultModal();
                    }
                }
 
@@ -292,6 +302,10 @@ for(const tr of playerSelected){
 
 function toggleModal(){
     modal.classList.toggle("show-modal")
+}
+
+function toggleResultModal(){
+    resultModal.classList.toggle("show-modal")
 }
 
 /**@param string or integer that needs to be converted to US currency

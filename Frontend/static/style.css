@@ -115,8 +115,8 @@ tr:hover{
     background-color: rgba(155,217,213,0.18);
 }
 table{
-    background: rgba(83,215,243,0.25);
-    padding: 10px;
+    background: #e8ebed;
+    padding: 0px;
     list-style: none;
 }
 
@@ -180,6 +180,21 @@ td{
     z-index: 2;
 }
 .close-button:hover {
+    background-color: darkgray;
+}
+
+.close-result-button {
+    float: right;
+    width: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    background-color: lightgray;
+    position:relative;
+    z-index: 2;
+}
+.close-result-button:hover {
     background-color: darkgray;
 }
 
