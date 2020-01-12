@@ -22,5 +22,8 @@
   "dependencies": {
     "express": "latest",
     "reload": "^3.0.1"
+  },
+  "engines": {
+    "node": "12.14.0"
   }
 }
