@@ -49,6 +49,7 @@ function tryTrade(){
     const teamSalaries = [];
     const incSal = [];
     const outSal = [];
+    let reasons = ""; //reasons why trade isn't successful
     //call outgoing-salary gatherer same thing
 
     //need to create some form of trade logic, may have to break it up.
@@ -57,6 +58,7 @@ function tryTrade(){
         console.log(gatherTradeIncomeSalary(i));
         console.log(gatherTradeOutgoingSalary(i));
         console.log(gatherSalaryCap(i));
+
         let curIncSal = Number(gatherTradeIncomeSalary(i));
         let curOutSal = Number(gatherTradeOutgoingSalary(i));
         let curSalCap = Number(gatherSalaryCap(i));
@@ -85,27 +87,53 @@ function tryTrade(){
                if(outSal[i] < 6533333){
                    if(incSal[i] > outSal[i] * 1.75 + 100000){
                        toggleResultModal();
-                       alert("over the cap")
+                       reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
+                        and is sending out less then 6.53M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] * 1.75 + 100000))} from the 
+                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                       `
                    }
                }
 
                else if(outSal[i] > 6533334 && outSal[i] < 19600000){
                    if(incSal[i] > outSal[i] + 5000000){
-                       alert("over the cap 2");
-                       toggleResultModal();
+                        reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
+                        and is sending out between 6.53M and 19.6M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] + 500000))} from the 
+                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                       `
                    }
                }
 
                else if(outSal[i] > 19600000 ){
                    if(incSal[i] > outSal[i] * 1.25 + 100000){
-                       alert("over the cap 3");
+                       reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
+                       and is sending out more than 19.6M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] * 1.25 + 100000))} from the 
+                       <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                       `
                    }
                }
-            }
-        }
+            } //emd  if(isOverCap)
+        } //end else
+    } // end for loop
+   writeFinalResult(reasons);
+} //end method
+
+function writeFinalResult(reasons){
+    let tradeSumm = document.querySelector(".trade-summary");
+    let tradeDet= document.querySelector(".trade-details");
+    tradeDet.innerHTML = "";
+    tradeSumm.innerHTML = ""; //reset for every new trade
+    if(reasons == ""){
+       tradeSumm.innerHTML +=  `<br><span style='color: green; '> TRADE SUCCESSFUL</span> </br>`;
+       tradeDet.innerHTML += reasons
+       toggleResultModal();
     }
+    else{
+       tradeSumm.innerHTML += "TRADE FAILED";
+       tradeDet.innerHTML += reasons;
+       alert(reasons)
+        toggleResultModal();
 
-
+    }
 }
 
 function isOverCap(curSalary){
@@ -384,7 +412,9 @@ function generateRosterHeader(teamName, index){
      $.getJSON("./logos.json", function (teams) {
          const teamRoster= teams.filter(team =>  team.Team.match(teamName));
          rosterHeader.innerHTML += `
-         <b> ${teamRoster[0].Team}</b>           
+        <div class="team-name">
+          ${teamRoster[0].Team}           
+         </div>
           <img class="team__logo" src="${teamRoster[0].Logo}" height="50px" width="55px" alt="${teamRoster[0].Team}"/>
            <br><b>INCOMING SALARY: </b><div class="income-salary">$0 </div>
             <b>OUTGOING SALARY:</b><div class="outgoing-salary">$0</div>

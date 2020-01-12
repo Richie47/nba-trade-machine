@@ -239,3 +239,14 @@ td{
     height: 50px;
     width: 30%;
 }
+
+.trade-summary{
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.6em;
+}
+
+.team-name{
+    font-weight: bold;
+}
