@@ -13,15 +13,14 @@
     "url": "git+https://github.com/Richie47/nba-trade-machine.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Richie47",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Richie47/nba-trade-machine/issues"
   },
   "homepage": "https://github.com/Richie47/nba-trade-machine#readme",
   "dependencies": {
-    "express": "latest",
-    "reload": "^3.0.1"
+    "express": "latest"
   },
   "engines": {
     "node": "12.14.0"
