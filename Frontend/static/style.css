@@ -80,7 +80,16 @@ h1{
     /*someday may want to change select color*/
 }
 
-/* From here on this is for INDEX_SCRIPT.JS and TRADE.HTML */
+/* From here on this is for TRADE_SCRIPT.JS and TRADE.HTML */
+
+.home-link{
+    background-color: #fff;
+}
+home-link:hover{
+    background-color: red;
+}
+
+
 
 tr, td{
     border: 1px solid black;

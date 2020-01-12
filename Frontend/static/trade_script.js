@@ -55,10 +55,6 @@ function tryTrade(){
     //need to create some form of trade logic, may have to break it up.
     for(let i = 0; i < teamsToCreate; i++){
         curSalDif = 0;
-        console.log(gatherTradeIncomeSalary(i));
-        console.log(gatherTradeOutgoingSalary(i));
-        console.log(gatherSalaryCap(i));
-
         let curIncSal = Number(gatherTradeIncomeSalary(i));
         let curOutSal = Number(gatherTradeOutgoingSalary(i));
         let curSalCap = Number(gatherSalaryCap(i));
@@ -76,7 +72,6 @@ function tryTrade(){
     }
 
     for(let i = 0; i < teamSalaries.length; i++){
-        console.log("yo one" + teamSalaries[i]);
         if(teamSalaries[i] == 0){
             continue;
         }
@@ -88,7 +83,7 @@ function tryTrade(){
                    if(incSal[i] > outSal[i] * 1.75 + 100000){
                        reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
                         and is sending out less then 6.53M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] * 1.75 + 100000))} from the 
-                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br> <br>
                        `
                    }
                }
@@ -97,7 +92,7 @@ function tryTrade(){
                    if(incSal[i] > outSal[i] + 5000000){
                         reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
                         and is sending out between 6.53M and 19.6M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] + 500000))} from the 
-                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                        <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br> <br>
                        `
                    }
                }
@@ -106,7 +101,7 @@ function tryTrade(){
                    if(incSal[i] > outSal[i] * 1.25 + 100000){
                        reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
                        and is sending out more than 19.6M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] * 1.25 + 100000))} from the 
-                       <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
+                       <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br> <br>
                        `
                    }
                }
@@ -123,7 +118,7 @@ function writeFinalResult(reasons){
     tradeSumm.innerHTML = ""; //reset for every new trade
     if(reasons == ""){
        tradeSumm.innerHTML +=  `<br><span style='color: green; '> TRADE SUCCESSFUL</span> </br>`;
-       tradeDet.innerHTML += reasons
+       tradeDet.innerHTML += reasons;
        toggleResultModal();
     }
     else{
@@ -148,14 +143,12 @@ function gatherSalaryCap(curTeam){
 }
 
 function gatherTradeIncomeSalary(curTeam){
-    console.log(curTeam)
     let curIncSal = document.querySelectorAll(".income-salary")[curTeam].innerHTML;
     curIncSal = stripCurrency(curIncSal);
     return curIncSal;
 }
 
 function gatherTradeOutgoingSalary(curTeam){
-    console.log(curTeam)
     let curOutSal = document.querySelectorAll(".outgoing-salary")[curTeam].innerHTML;
     curOutSal = stripCurrency(curOutSal);
     return curOutSal;
@@ -200,7 +193,6 @@ function findAvailableTeams(currentTeam){
 
 function addToTradeBlock(team, player,playerSelector, playerSalary, rosterTable){
   for(const [key,value] of rosterTeamMap){
-      console.log(key)
 
       let tradeBlockSelector = key.substring(key.length-1,key.length);
       if(key == rosterTable){
@@ -225,7 +217,6 @@ function addToTradeBlock(team, player,playerSelector, playerSalary, rosterTable)
 
     for(const [key,value] of rosterTeamMap){
             let tradeBlockSelector = key.substring(key.length-1, key.length);
-            console.log( key + " " + value.inTradeSalary)
 
             if(key == team){
                 let outgoingSalarySelector = document.querySelectorAll(".outgoing-salary");
@@ -293,11 +284,9 @@ for(const tr of playerSelected){
         let playerSalary = e.path[1].querySelectorAll('td')[1].innerHTML;
 
         let currentIndex = rosterTable.toString().substring(rosterTable.toString().length-1, rosterTable.toString().length);
-        console.log("curr: " +  currentIndex);
         //j.log(res.toString())
         playerSalary = playerSalary.replace(/\D/g, '');// regex for removing currency format on salary
         if(e.path[1].classList.contains('tradeSelected')){
-            console.log(rosterTable)
             removeFromTradeBlock(rosterTable, clickedPlayer, e.path[1], playerSalary)
            // e.path[1].classList.remove('tradeSelected')
             //tradeBlock = tradeBlock.filter((player) => player != clickedPlayer);
@@ -312,7 +301,6 @@ for(const tr of playerSelected){
 //            tradeBlock.push(clickedPlayer);
             //document.querySelector(".confirm-trade").innerHTML = tradeBlock.join("");
             toggleModal();
-            console.log('yo')
         }
 
         //demo = demo.substring(0,50)
