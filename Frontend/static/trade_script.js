@@ -86,7 +86,6 @@ function tryTrade(){
                //if the outgoing salary is within 0-6.5M
                if(outSal[i] < 6533333){
                    if(incSal[i] > outSal[i] * 1.75 + 100000){
-                       toggleResultModal();
                        reasons += `<b> ${document.querySelectorAll(".team-name")[i].innerHTML}:</b> Team is over the cap
                         and is sending out less then 6.53M in salary. You must cut ${formatter.format(incSal[i] - (outSal[i] * 1.75 + 100000))} from the 
                         <b> ${document.querySelectorAll(".team-name")[i].innerHTML}</b> to make this trade work. <br>
@@ -130,7 +129,6 @@ function writeFinalResult(reasons){
     else{
        tradeSumm.innerHTML += "TRADE FAILED";
        tradeDet.innerHTML += reasons;
-       alert(reasons)
         toggleResultModal();
 
     }
