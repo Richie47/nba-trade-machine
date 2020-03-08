@@ -5,6 +5,8 @@ Currently working on a raw demo, no distinct timeline yet this is just a fun sid
 
 Backend goals:
 
+# Host: https://nba-trade-machine.herokuapp.com/
+
 ### Scrape general information on players [DONE]
 
 ### Export information to SQL [DONE]
